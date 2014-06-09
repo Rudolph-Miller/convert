@@ -37,7 +37,13 @@
 
 (setf (ningle:route *app* "/result" :method :POST)
 			#'(lambda (params)
-					(let ((q (getf params :|q|)))
-							(html-format (convert q)))))
+					(let* ((q (getf params :|q|))
+								 (flag (same-group-p q)))
+							(concatenate 
+								'string 
+								(if flag
+									""
+									"<script>alert(\"語調が混在しています！\")</script>")
+								(html-format (convert q))))))
 
 (clack:clackup *app*)
