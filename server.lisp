@@ -16,6 +16,21 @@
 											 "</form>")))
 
 
+(defun html-format (str)
+	(let ((result nil)
+				(acc nil))
+		(loop
+			for chr in (coerce str 'list)
+			do (push chr acc)
+			when (eql #\NewLine chr) 
+			do (progn (push (nreverse acc) result)
+								(setq acc nil)))
+		(push (nreverse acc) result)
+		(apply #'concatenate 
+			'string
+			(mapcar #'(lambda (item)
+									(append (coerce "<p>" 'list) item (coerce "</p>" 'list)))
+							(nreverse result)))))
 
 (setf (ningle:route *app* "/")
 			(home))
@@ -23,6 +38,6 @@
 (setf (ningle:route *app* "/result" :method :POST)
 			#'(lambda (params)
 					(let ((q (getf params :|q|)))
-						(format nil "~a~%" (convert q)))))
+							(html-format (convert q)))))
 
 (clack:clackup *app*)
