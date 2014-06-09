@@ -31,10 +31,10 @@
 	(concatenate 'string (nreverse result))))
 
 (defvar *group1*
-	'("です。" "ます。" "ございます。"))
+	'("です。" "ます。" "ございます。" "ません。"))
 
 (defvar *group2*
-	'("ある。"))
+	'("ある。" "ない。"))
 
 (defun same-group-p (str)
 	(let ((group1 nil)
